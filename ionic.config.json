@@ -1,0 +1,8 @@
+{
+  "name": "go2gether",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "0b39e93b"
+}
