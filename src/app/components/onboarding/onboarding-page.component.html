@@ -1,0 +1,20 @@
+<div class="vertical-center">
+    <ion-grid>
+        <ion-row class="ion-margin-bottom">
+            <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input type="email" [(ngModel)]="email" email ></ion-input>
+                <ion-note slot="error">Invalid email</ion-note>
+            </ion-item>
+        </ion-row>
+        <ion-row>
+            <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input placeholder="Enter password" [(ngModel)]="password" type="password"  ></ion-input>
+            </ion-item>
+        </ion-row>
+        <ion-row class="ion-margin-top">
+            <ion-button class="login-button" expand="full" (click)="login()">Login</ion-button>
+        </ion-row>
+    </ion-grid>
+</div>
