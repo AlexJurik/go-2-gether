@@ -10,14 +10,20 @@ import { UserService } from 'src/app/services/user.service';
 export class OnboardingPage {
 
   constructor(private userService: UserService, private router: Router){}
-  email: string="";
-  password: string="";
+  email!: string;
+  password!: string;
 
 
   login(){
-   const logged = this.userService.login(this.email,this.password);
+   const logged = this.userService.login(this.email ,this.password);
     if(logged){
       this.router.navigateByUrl("/app");
+      this.reset();
     }
+  }
+
+  reset(){
+    this.email="";
+    this.password=""
   }
 }
