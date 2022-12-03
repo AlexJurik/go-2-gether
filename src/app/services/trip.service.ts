@@ -7,6 +7,7 @@ import { TRIPS } from '../mocks/mock-trips';
 })
 export class TripService {
   public trips: Trip[] = TRIPS;
+  public idCounter: number = 4;
 
   public getUserTrips(userId: number): Trip[] {
     return [...this.trips].filter((trip) => trip.userId === userId);
@@ -14,5 +15,6 @@ export class TripService {
 
   public addTrip(trip: Trip): void {
     this.trips.push(trip);
+    this.idCounter++;
   }
 }

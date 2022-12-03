@@ -13,8 +13,10 @@ export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
   public trips: Trip[] = [];
   public tripName?: string;
-  public startPoint?: string;
-  public endPoint?: string;
+  public startXPoint?: number;
+  public startYPoint?: number;
+  public endXPoint?: number;
+  public endYPoint?: number;
   public startTime?: string;
   public endTime?: string;
 
@@ -37,7 +39,7 @@ export class DashboardPage implements OnInit {
   public confirm() {
     this.modal?.dismiss(null, 'cancel');
     this.tripService.addTrip({
-      id: 10,
+      id: this.tripService.idCounter,
       userId: this.userService.loggedUser!.id,
       name: this.tripName!,
       timeWindow: {
@@ -45,8 +47,8 @@ export class DashboardPage implements OnInit {
         end: this.endTime!
       },
       point: {
-        start: [1, 1],
-        end: [2, 2]
+        start: [this.startXPoint!, this.startYPoint!],
+        end: [this.endXPoint!, this.endYPoint!]
       }
     });
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
