@@ -9,14 +9,19 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule)
+    loadChildren: () => import('./components/main/main.module').then(m => m.MainPageModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./components/onboarding/onboarding.module').then(m => m.OnboardingPageModule)
   }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
