@@ -5,13 +5,14 @@ import { MatchingService } from './matching.service';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TripService {
   constructor(
     private matchingService: MatchingService,
     private userService: UserService
-  ) {}
+  ) {
+  }
 
   public trips: Trip[] = TRIPS;
   public idCounter: number = 4;
@@ -30,8 +31,9 @@ export class TripService {
     const userType = this.userService.checkUserType(trip.userId);
     if (userType === 'passenger') {
       const tripsByUserType = this.getTripsByUserType('driver');
-      this.matchingService.findMatchedTripsPassanger(trip, tripsByUserType);
+      this.matchingService.findMatchedTripsPassenger(trip, tripsByUserType);
     }
+
     if (userType === 'driver') {
       const tripsByUserType = this.getTripsByUserType('passenger');
       this.matchingService.findMatchedTripsDriver(trip, tripsByUserType);

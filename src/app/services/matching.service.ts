@@ -4,14 +4,15 @@ import { Trip } from '../models/trip';
 import { MapboxService } from './mapbox.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MatchingService {
-  constructor(private mapBoxService: MapboxService) {}
+  constructor(private mapBoxService: MapboxService) {
+  }
 
   public matchedTripsMap: Map<number, Trip[]> = new Map<number, Trip[]>();
 
-  public async findMatchedTripsPassanger(tripToMatch: Trip, trips: Trip[]) {
+  public async findMatchedTripsPassenger(tripToMatch: Trip, trips: Trip[]) {
     const matchedTrips: Trip[] = [];
     for (let trip of trips) {
       const polygonStart = await lastValueFrom(

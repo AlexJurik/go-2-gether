@@ -38,6 +38,6 @@ export class MapboxService {
   }
 
   public getIsochrone([x, y]: [number, number], radius: number): Observable<Isochrone> {
-    return this.httpClient.get<Isochrone>(`https://api.mapbox.com/isochrone/v1/mapbox/driving/${ x }%2C${ y }?contours_meters=1000&contours_colors=54278f&polygons=true&denoise=1&generalize=500&access_token=${ this.mapboxApiKey }`);
+    return this.httpClient.get<Isochrone>(`https://api.mapbox.com/isochrone/v1/mapbox/driving/${ x }%2C${ y }?contours_meters=${ radius }&contours_colors=54278f&polygons=true&denoise=1&generalize=500&access_token=${ this.mapboxApiKey }`);
   }
 }
