@@ -6,7 +6,13 @@ import { TRIPS } from '../mocks/mock-trips';
   providedIn: 'root'
 })
 export class TripService {
-  public getTrips(): Trip[] {
-    return TRIPS;
+  public trips: Trip[] = TRIPS;
+
+  public getUserTrips(userId: number): Trip[] {
+    return [...this.trips].filter((trip) => trip.userId === userId);
+  }
+
+  public addTrip(trip: Trip): void {
+    this.trips.push(trip);
   }
 }

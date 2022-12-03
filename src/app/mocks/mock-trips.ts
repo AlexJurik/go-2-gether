@@ -10,7 +10,7 @@ export const TRIPS: Trip[] = [
   },
   {
     id: 2,
-    userId: 5,
+    userId: 2,
     name: 'Meeting with John',
     point: {start: [21.290566, 48.721385], end: [21.279625, 48.690074]},
     timeWindow: {start: '10:00', end: '11:00'}
