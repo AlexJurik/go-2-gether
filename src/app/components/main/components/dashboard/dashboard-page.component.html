@@ -53,7 +53,7 @@
                          (ionChange)="searchAddress($event, 'start')"></ion-searchbar>
 
           <ion-list *ngIf="startSuggestions">
-            <ion-item *ngFor="let address of startSuggestions.features" button (click)="selectStartPoint(address)">
+            <ion-item *ngFor="let address of startSuggestions" button (click)="selectStartPoint(address)">
               <ion-label>{{ address.place_name }}</ion-label>
             </ion-item>
           </ion-list>
@@ -71,7 +71,7 @@
                          (ionChange)="searchAddress($event, 'end')"></ion-searchbar>
 
           <ion-list *ngIf="endSuggestions">
-            <ion-item *ngFor="let address of endSuggestions.features" button (click)="selectEndPoint(address)">
+            <ion-item *ngFor="let address of endSuggestions" button (click)="selectEndPoint(address)">
               <ion-label>{{ address.place_name }}</ion-label>
             </ion-item>
           </ion-list>
@@ -83,6 +83,11 @@
             <ion-text (click)="endAddress = undefined">{{endAddress?.place_name}}</ion-text>
           </ion-item>
         </ng-template>
+
+        <ion-item>
+          <ion-label position="floating">Enter radius (m)</ion-label>
+          <ion-input type="number" placeholder="Radius" [(ngModel)]="radius"></ion-input>
+        </ion-item>
 
         <!--<ion-item>
           <ion-label>Choose start time</ion-label>

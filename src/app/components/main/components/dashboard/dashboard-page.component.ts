@@ -3,7 +3,7 @@ import { TripService } from '../../../../services/trip.service';
 import { Trip } from '../../../../models/trip';
 import { UserService } from '../../../../services/user.service';
 import { IonModal } from '@ionic/angular';
-import { Address, Feature, MapboxService } from '../../../../services/mapbox.service';
+import { AddressFeature, MapboxService } from '../../../../services/mapbox.service';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -15,16 +15,13 @@ export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
   public trips: Trip[] = [];
   public tripName?: string;
-  public startXPoint?: number;
-  public startYPoint?: number;
-  public endXPoint?: number;
-  public endYPoint?: number;
   public startTime?: string;
   public endTime?: string;
-  public startSuggestions?: Address;
-  public endSuggestions?: Address;
-  public startAddress?: Feature;
-  public endAddress?: Feature;
+  public startSuggestions?: AddressFeature[];
+  public endSuggestions?: AddressFeature[];
+  public startAddress?: AddressFeature;
+  public endAddress?: AddressFeature;
+  public radius?: number;
 
   constructor(
     private readonly mapboxService: MapboxService,
@@ -43,12 +40,13 @@ export class DashboardPage implements OnInit {
     this.modal?.dismiss(null, 'cancel');
   }
 
-  public confirm() {
+  public async confirm() {
     this.modal?.dismiss(null, 'cancel');
     this.tripService.addTrip({
       id: this.tripService.idCounter,
       userId: this.userService.loggedUser!.id,
       name: this.tripName!,
+      radius: this.radius!,
       timeWindow: {
         start: '9:00',
         end: '10:00'
@@ -58,6 +56,7 @@ export class DashboardPage implements OnInit {
         end: this.endAddress?.center!
       }
     });
+    
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
   }
 
@@ -67,18 +66,18 @@ export class DashboardPage implements OnInit {
 
     const response = await lastValueFrom(this.mapboxService.search(query));
     if (type === 'start') {
-      this.startSuggestions = response;
+      this.startSuggestions = response.features;
     } else {
-      this.endSuggestions = response;
+      this.endSuggestions = response.features;
     }
   }
 
-  public selectStartPoint(feature: Feature) {
+  public async selectStartPoint(feature: AddressFeature) {
     this.startSuggestions = undefined;
     this.startAddress = feature;
   }
 
-  public selectEndPoint(feature: Feature) {
+  public selectEndPoint(feature: AddressFeature) {
     this.endSuggestions = undefined;
     this.endAddress = feature;
   }
