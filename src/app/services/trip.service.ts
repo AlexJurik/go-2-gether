@@ -6,11 +6,7 @@ import { TRIPS } from '../mocks/mock-trips';
   providedIn: 'root'
 })
 export class TripService {
-
-  constructor() { }
-
-  getUsers(): Trip[] {
+  public getTrips(): Trip[] {
     return TRIPS;
   }
-
 }

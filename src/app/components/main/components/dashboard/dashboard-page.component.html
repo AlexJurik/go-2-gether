@@ -1,1 +1,19 @@
-It works
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h1 class="ion-padding-bottom">Planned trips</h1>
+  <ion-card *ngFor="let trip of trips">
+    <ion-card-header>
+      <ion-card-title>{{trip.name}}</ion-card-title>
+      <ion-card-subtitle>{{trip.timeWindow.start}} - {{trip.timeWindow.end}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      There is no matched trip at the moment.
+    </ion-card-content>
+  </ion-card>
+</ion-content>
