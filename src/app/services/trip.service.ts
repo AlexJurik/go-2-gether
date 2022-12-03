@@ -23,12 +23,12 @@ export class TripService {
 
   public getTripsByUserType(userType: string): Trip[] {
     return [...this.trips].filter(
-      (trip) => this.userService.checkUserType(trip.userId) === userType
+      (trip) => this.userService.getUser(trip.userId)?.type === userType
     );
   }
 
   public addTrip(trip: Trip): void {
-    const userType = this.userService.checkUserType(trip.userId);
+    const userType = this.userService.getUser(trip.userId)?.type;
     if (userType === 'passenger') {
       const tripsByUserType = this.getTripsByUserType('driver');
       this.matchingService.findMatchedTripsPassenger(trip, tripsByUserType);

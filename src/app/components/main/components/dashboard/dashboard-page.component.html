@@ -10,12 +10,25 @@
     <ion-card *ngFor="let trip of trips">
       <ion-card-header>
         <ion-card-title>{{trip.name}}</ion-card-title>
-        <ion-card-subtitle>{{trip.timeWindow.start}} - {{trip.timeWindow.end}}</ion-card-subtitle>
+        <ion-card-subtitle>{{trip.timeWindow.start.toFormat('y-LL-dd\' \'hh:mm')}}
+          - {{trip.timeWindow.end.toFormat('y-LL-dd\' \'hh:mm')}}</ion-card-subtitle>
       </ion-card-header>
 
-      <ion-card-content>
-        There is no matched trip at the moment.
+      <ion-card-content *ngIf="getMatchedTrips(trip.id) as trips; else noTrips">
+        <ng-container *ngFor="let trip of trips">
+          <ion-icon name="caret-forward-outline"></ion-icon>
+          {{ trip.name }}
+          <ng-container *ngIf="getUser(trip.userId) as user">
+            <span class="ion-justify-content-end">{{ user.name }}</span>
+          </ng-container>
+        </ng-container>
       </ion-card-content>
+
+      <ng-template #noTrips>
+        <ion-card-content>
+          There is no matched trip at the moment.
+        </ion-card-content>
+      </ng-template>
     </ion-card>
   </ng-container>
   <ng-template #noData>
@@ -89,7 +102,7 @@
           <ion-input type="number" placeholder="Radius" [(ngModel)]="radius"></ion-input>
         </ion-item>
 
-        <!--<ion-item>
+        <ion-item>
           <ion-label>Choose start time</ion-label>
           <ion-datetime-button datetime="startTime"></ion-datetime-button>
 
@@ -108,7 +121,7 @@
               <ion-datetime id="endTime" [(ngModel)]="endTime"></ion-datetime>
             </ng-template>
           </ion-modal>
-        </ion-item>-->
+        </ion-item>
       </ion-list>
     </ion-content>
   </ng-template>

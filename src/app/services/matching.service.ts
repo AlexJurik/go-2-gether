@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { Trip } from '../models/trip';
 import { MapboxService } from './mapbox.service';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,18 @@ export class MatchingService {
         tripToMatch.point.end,
         polygonEnd.features[0].geometry.coordinates[0]
       );
-      if (checkStartPoint && checkEndPoint) {
+      if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
         matchedTrips.push(trip);
         this.matchedTripsMap.get(trip.id)?.push(tripToMatch);
       }
     }
+
     this.matchedTripsMap.set(tripToMatch.id, matchedTrips);
+  }
+
+  public checkTimeWindows(first: { start: DateTime, end: DateTime },
+                          second: { start: DateTime, end: DateTime }): boolean {
+    return second.start >= first.start && second.start <= first.end || second.end >= first.start && second.end <= first.end
   }
 
   public async findMatchedTripsDriver(tripToMatch: Trip, trips: Trip[]) {
@@ -60,11 +67,12 @@ export class MatchingService {
         trip.point.end,
         polygonEnd.features[0].geometry.coordinates[0]
       );
-      if (checkStartPoint && checkEndPoint) {
+      if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
         matchedTrips.push(trip);
         this.matchedTripsMap.get(trip.id)?.push(tripToMatch);
       }
     }
+
     this.matchedTripsMap.set(tripToMatch.id, matchedTrips);
   }
 

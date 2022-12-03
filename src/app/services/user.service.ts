@@ -24,7 +24,7 @@ export class UserService {
     return false
   }
 
-  public checkUserType(userId: number): string {
-    return this.users.find((user) => user.id === userId)!.type
+  public getUser(userId: number): User | undefined {
+    return this.users.find((user) => user.id === userId)
   }
 }
