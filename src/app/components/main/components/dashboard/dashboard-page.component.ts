@@ -50,12 +50,12 @@ export class DashboardPage implements OnInit {
       userId: this.userService.loggedUser!.id,
       name: this.tripName!,
       timeWindow: {
-        start: this.startTime!,
-        end: this.endTime!
+        start: '9:00',
+        end: '10:00'
       },
       point: {
-        start: [this.startXPoint!, this.startYPoint!],
-        end: [this.endXPoint!, this.endYPoint!]
+        start: this.startAddress?.center!,
+        end: this.endAddress?.center!
       }
     });
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
