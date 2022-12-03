@@ -20,7 +20,7 @@ export interface Isochrone {
 export interface IsochroneFeature {
   type: string;
   geometry: {
-    coordinates: number[][];
+    coordinates: [number, number][][];
   }
 }
 

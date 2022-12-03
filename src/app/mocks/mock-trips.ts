@@ -6,7 +6,10 @@ export const TRIPS: Trip[] = [
     userId: 1,
     name: 'To work',
     radius: 1000,
-    point: {start: [21.247723, 48.588609], end: [21.209788, 48.667655]},
+    point: {
+      start: [
+        21.2183436, 48.7169856], end: [21.209788, 48.667655]
+    },
     timeWindow: {start: '8:00', end: '9:00'}
   },
   {
