@@ -1,15 +1,26 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { USERS } from '../mocks/mock-users'
+import { USERS } from '../mocks/mock-users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  public users: User[] = USERS;
+  public loggedUser?: User = USERS[0];
 
-  constructor() { }
+  public getUsers(): User[] {
+    return this.users;
+  }
 
-  getUsers(): User[] {
-    return USERS;
+  public login(email: string, password: string): boolean {
+    const user = this.users.find((user) => user.email === email);
+
+    if (user && user.password === password) {
+      this.loggedUser = user;
+      return true;
+    }
+
+    return false
   }
 }
