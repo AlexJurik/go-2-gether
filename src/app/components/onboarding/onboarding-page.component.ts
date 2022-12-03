@@ -8,22 +8,22 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./onboarding-page.component.scss']
 })
 export class OnboardingPage {
-
-  constructor(private userService: UserService, private router: Router){}
   email!: string;
   password!: string;
 
+  constructor(private userService: UserService, private router: Router) {
+  }
 
-  login(){
-   const logged = this.userService.login(this.email ,this.password);
-    if(logged){
+  login() {
+    const logged = this.userService.login(this.email, this.password);
+    if (logged) {
       this.router.navigateByUrl("/app");
       this.reset();
     }
   }
 
-  reset(){
-    this.email="";
-    this.password=""
+  reset() {
+    this.email = "";
+    this.password = ""
   }
 }

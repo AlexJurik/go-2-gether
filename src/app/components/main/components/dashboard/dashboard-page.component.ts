@@ -3,6 +3,8 @@ import { TripService } from '../../../../services/trip.service';
 import { Trip } from '../../../../models/trip';
 import { UserService } from '../../../../services/user.service';
 import { IonModal } from '@ionic/angular';
+import { Address, Feature, MapboxService } from '../../../../services/mapbox.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -19,8 +21,13 @@ export class DashboardPage implements OnInit {
   public endYPoint?: number;
   public startTime?: string;
   public endTime?: string;
+  public startSuggestions?: Address;
+  public endSuggestions?: Address;
+  public startAddress?: Feature;
+  public endAddress?: Feature;
 
   constructor(
+    private readonly mapboxService: MapboxService,
     private readonly tripService: TripService,
     private readonly userService: UserService
   ) {
@@ -54,4 +61,25 @@ export class DashboardPage implements OnInit {
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
   }
 
+  public async searchAddress(event: Event, type: 'start' | 'end') {
+    // Call API
+    const query = (event.target as any)?.value?.toLowerCase();
+
+    const response = await lastValueFrom(this.mapboxService.search(query));
+    if (type === 'start') {
+      this.startSuggestions = response;
+    } else {
+      this.endSuggestions = response;
+    }
+  }
+
+  public selectStartPoint(feature: Feature) {
+    this.startSuggestions = undefined;
+    this.startAddress = feature;
+  }
+
+  public selectEndPoint(feature: Feature) {
+    this.endSuggestions = undefined;
+    this.endAddress = feature;
+  }
 }

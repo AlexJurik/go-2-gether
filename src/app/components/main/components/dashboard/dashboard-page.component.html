@@ -48,23 +48,43 @@
           <ion-label position="floating">Enter trip name</ion-label>
           <ion-input type="text" placeholder="Trip name" [(ngModel)]="tripName"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Enter start X point</ion-label>
-          <ion-input type="number" placeholder="Start X point" [(ngModel)]="startXPoint"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Enter start Y point</ion-label>
-          <ion-input type="number" placeholder="Start Y point" [(ngModel)]="startYPoint"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Enter end X point</ion-label>
-          <ion-input type="number" placeholder="End X point" [(ngModel)]="endXPoint"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Enter end Y point</ion-label>
-          <ion-input type="number" placeholder="End Y point" [(ngModel)]="endYPoint"></ion-input>
-        </ion-item>
-        <ion-item>
+        <ng-container *ngIf="!startAddress; else start">
+          <ion-searchbar placeholder="Find start address" [debounce]="1000"
+                         (ionChange)="searchAddress($event, 'start')"></ion-searchbar>
+
+          <ion-list *ngIf="startSuggestions">
+            <ion-item *ngFor="let address of startSuggestions.features" button (click)="selectStartPoint(address)">
+              <ion-label>{{ address.place_name }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+
+        <ng-template #start>
+          <ion-item>
+            <ion-label>Start Address</ion-label>
+            <ion-text (click)="startAddress = undefined">{{startAddress?.place_name}}</ion-text>
+          </ion-item>
+        </ng-template>
+
+        <ng-container *ngIf="!endAddress; else end">
+          <ion-searchbar placeholder="Find destination" [debounce]="1000"
+                         (ionChange)="searchAddress($event, 'end')"></ion-searchbar>
+
+          <ion-list *ngIf="endSuggestions">
+            <ion-item *ngFor="let address of endSuggestions.features" button (click)="selectEndPoint(address)">
+              <ion-label>{{ address.place_name }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+
+        <ng-template #end>
+          <ion-item>
+            <ion-label>End Address</ion-label>
+            <ion-text (click)="endAddress = undefined">{{endAddress?.place_name}}</ion-text>
+          </ion-item>
+        </ng-template>
+
+        <!--<ion-item>
           <ion-label>Choose start time</ion-label>
           <ion-datetime-button datetime="startTime"></ion-datetime-button>
 
@@ -83,7 +103,7 @@
               <ion-datetime id="endTime" [(ngModel)]="endTime"></ion-datetime>
             </ng-template>
           </ion-modal>
-        </ion-item>
+        </ion-item>-->
       </ion-list>
     </ion-content>
   </ng-template>
