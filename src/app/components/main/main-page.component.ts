@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class MainPage {
   public appPages = [
-    {title: 'Dashboard', url: '/dashboard', icon: ''}
+    {title: 'Dashboard', url: '/app/dashboard', icon: ''}
   ];
 }
