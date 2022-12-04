@@ -2,27 +2,7 @@ import { Injectable } from '@angular/core';
 import { apiKey } from '../../mapbox.config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Address {
-  features: AddressFeature[];
-}
-
-export interface AddressFeature {
-  id: string;
-  place_name: string;
-  center: [number, number]
-}
-
-export interface Isochrone {
-  features: IsochroneFeature[]
-}
-
-export interface IsochroneFeature {
-  type: string;
-  geometry: {
-    coordinates: [number, number][][];
-  }
-}
+import { Address, Isochrone } from '../models';
 
 @Injectable({
   providedIn: 'root'

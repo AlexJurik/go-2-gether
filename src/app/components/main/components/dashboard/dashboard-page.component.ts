@@ -3,27 +3,25 @@ import { TripService } from '../../../../services/trip.service';
 import { Trip } from '../../../../models/trip';
 import { UserService } from '../../../../services/user.service';
 import { IonModal } from '@ionic/angular';
-import {
-  AddressFeature,
-  MapboxService,
-} from '../../../../services/mapbox.service';
+import { MapboxService } from '../../../../services/mapbox.service';
 import { lastValueFrom } from 'rxjs';
 import { MatchingService } from '../../../../services/matching.service';
 import { DateTime } from 'luxon';
 import { User } from '../../../../models/user';
+import { AddressFeature } from '../../../../models';
 
 @Component({
   selector: 'app-main',
   templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.scss'],
+  styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
-  @ViewChild('fab', { static: true }) public fab?: any;
+  @ViewChild('fab', {static: true}) public fab?: any;
   public trips: Trip[] = [];
   public tripName?: string;
   public startTime?: string = DateTime.now().toISO();
-  public endTime?: string = DateTime.now().plus({ hour: 1 }).toISO();
+  public endTime?: string = DateTime.now().plus({hour: 1}).toISO();
   public startSuggestions?: AddressFeature[];
   public endSuggestions?: AddressFeature[];
   public startAddress?: AddressFeature;
@@ -38,7 +36,8 @@ export class DashboardPage implements OnInit {
     private readonly tripService: TripService,
     private readonly userService: UserService,
     private readonly matchingService: MatchingService
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this.loadUserTrips();
@@ -78,7 +77,7 @@ export class DashboardPage implements OnInit {
     this.endAddress = undefined;
     this.radius = undefined;
     this.startTime = DateTime.now().toISO();
-    this.endTime = DateTime.now().plus({ hour: 1 }).toISO();
+    this.endTime = DateTime.now().plus({hour: 1}).toISO();
   }
 
   public async confirm() {
@@ -91,12 +90,12 @@ export class DashboardPage implements OnInit {
         radius: this.radius!,
         timeWindow: {
           start: DateTime.fromISO(this.startTime!),
-          end: DateTime.fromISO(this.endTime!),
+          end: DateTime.fromISO(this.endTime!)
         },
         point: {
           start: this.startAddress!,
-          end: this.endAddress!,
-        },
+          end: this.endAddress!
+        }
       });
       this.tripForEdit = undefined;
       this.loadUserTrips();
@@ -108,12 +107,12 @@ export class DashboardPage implements OnInit {
         radius: this.radius!,
         timeWindow: {
           start: DateTime.fromISO(this.startTime!),
-          end: DateTime.fromISO(this.endTime!),
+          end: DateTime.fromISO(this.endTime!)
         },
         point: {
           start: this.startAddress!,
-          end: this.endAddress!,
-        },
+          end: this.endAddress!
+        }
       });
     }
 
@@ -148,7 +147,7 @@ export class DashboardPage implements OnInit {
         this.userService.loggedUser.id
       );
     }
-    if(this.userService.loggedUser?.favorite){
+    if (this.userService.loggedUser?.favorite) {
       this.checkForSuggestions();
     }
   }

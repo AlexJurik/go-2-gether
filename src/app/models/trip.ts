@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { AddressFeature } from '../services/mapbox.service';
+import { AddressFeature } from './address';
 
 export interface Trip {
   id: number;
