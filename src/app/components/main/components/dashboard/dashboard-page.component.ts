@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TripService } from '../../../../services/trip.service';
-import { Trip } from '../../../../models/trip';
+import { AddressFeature, Trip, User } from '../../../../models';
 import { UserService } from '../../../../services/user.service';
 import { IonModal } from '@ionic/angular';
 import { MapboxService } from '../../../../services/mapbox.service';
 import { lastValueFrom } from 'rxjs';
 import { MatchingService } from '../../../../services/matching.service';
 import { DateTime } from 'luxon';
-import { User } from '../../../../models/user';
-import { AddressFeature } from '../../../../models';
 
 @Component({
   selector: 'app-main',
@@ -17,7 +15,6 @@ import { AddressFeature } from '../../../../models';
 })
 export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
-  @ViewChild('fab', {static: true}) public fab?: any;
   public trips: Trip[] = [];
   public tripName?: string;
   public startTime?: string = DateTime.now().toISO();
