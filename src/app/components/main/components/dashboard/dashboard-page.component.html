@@ -50,8 +50,8 @@
     <ion-label>You have not planned any trip yet.</ion-label>
   </ng-template>
 
-  <h1 class="ion-padding-bottom">Suggested trips</h1>
   <ng-container *ngIf="suggestedTrips?.length">
+    <h1 class="ion-padding-bottom">Suggested trips</h1>
     <ion-card *ngFor="let suggestedTrip of suggestedTrips">
       <ion-card-header>
         <ion-card-title>{{suggestedTrip.name}}</ion-card-title>

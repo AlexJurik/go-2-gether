@@ -143,11 +143,16 @@ export class DashboardPage implements OnInit {
       this.trips = this.tripService.getUserTrips(
         this.userService.loggedUser.id
       );
+
+      for (const trip of this.trips) {
+        this.tripService.checkMatchings(trip);
+      }
     }
 
     if (this.userService.loggedUser?.favorite) {
       this.checkForSuggestions();
     }
+
 
     if (event) {
       setTimeout(() => {

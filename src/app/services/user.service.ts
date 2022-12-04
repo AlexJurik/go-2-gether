@@ -7,11 +7,7 @@ import { USERS } from '../mocks/mock-users';
 })
 export class UserService {
   public users: User[] = USERS;
-  public loggedUser?: User = USERS[1];
-
-  public getUsers(): User[] {
-    return this.users;
-  }
+  public loggedUser?: User = USERS[0];
 
   public login(email: string, password: string): boolean {
     const user = this.users.find((user) => user.email === email);

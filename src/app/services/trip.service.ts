@@ -41,7 +41,7 @@ export class TripService {
     this.checkMatchings(trip);
   }
 
-  private checkMatchings(trip: Trip) {
+  public checkMatchings(trip: Trip) {
     const userType = this.userService.getUser(trip.userId)?.type;
     if (userType === 'passenger') {
       const tripsByUserType = this.getTripsByUserType('driver');
@@ -54,8 +54,8 @@ export class TripService {
     }
   }
 
-  public findFavoriteTrips(user: User, trips: Trip[]): Trip[] | undefined{
-    return [...trips.filter((trip)=> user.favorite![0] === trip.point.end.center[0] && user.favorite![1] === trip.point.end.center[1])];
-    
+  public findFavoriteTrips(user: User, trips: Trip[]): Trip[] | undefined {
+    return [...trips.filter((trip) => user.favorite![0] === trip.point.end.center[0] && user.favorite![1] === trip.point.end.center[1])];
+
   }
 }

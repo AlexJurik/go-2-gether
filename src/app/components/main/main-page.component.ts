@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { User } from '../../models/user';
-import { Trip } from 'src/app/models/trip';
-import { TripService } from 'src/app/services/trip.service';
+import { User } from '../../models';
 
 @Component({
   selector: 'app-main',
@@ -11,14 +9,12 @@ import { TripService } from 'src/app/services/trip.service';
 })
 export class MainPage implements OnInit {
   public loggedUser?: User;
-  public favorites?: Trip[];
 
-  constructor(private readonly userService: UserService, private tripService: TripService) {
+  constructor(private readonly userService: UserService) {
   }
 
   public ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
-
   }
 
   public appPages = [
