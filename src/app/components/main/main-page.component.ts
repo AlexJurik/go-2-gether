@@ -18,13 +18,13 @@ export class MainPage implements OnInit {
 
   public ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
- 
+
   }
 
   public appPages = [
     {title: 'Dashboard', url: '/app/dashboard', icon: 'apps'},
-    {title: 'Analytics', url: '/app/analytics', icon: 'analytics'},
     {title: 'Bonuses', url: '/app/bonuses', icon: 'ribbon'},
+    {title: 'Analytics', url: '/app/analytics', icon: 'analytics'},
     {title: 'Settings', url: '/app/settings', icon: 'settings'}
   ];
 

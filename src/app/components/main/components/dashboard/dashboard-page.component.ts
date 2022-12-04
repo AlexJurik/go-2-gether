@@ -138,14 +138,21 @@ export class DashboardPage implements OnInit {
     this.endAddress = feature;
   }
 
-  private loadUserTrips(): void {
+  public loadUserTrips(event?: Event): void {
     if (this.userService.loggedUser) {
       this.trips = this.tripService.getUserTrips(
         this.userService.loggedUser.id
       );
     }
+
     if (this.userService.loggedUser?.favorite) {
       this.checkForSuggestions();
+    }
+
+    if (event) {
+      setTimeout(() => {
+        (event.target as any).complete();
+      }, 1000);
     }
   }
 

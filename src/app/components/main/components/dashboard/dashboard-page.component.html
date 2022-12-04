@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="loadUserTrips($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <h1 class="ion-padding-bottom">Planned trips</h1>
   <ng-container *ngIf="trips.length; else noData">
     <ion-card *ngFor="let trip of trips">
