@@ -7,7 +7,7 @@ import { USERS } from '../mocks/mock-users';
 })
 export class UserService {
   public users: User[] = USERS;
-  public loggedUser?: User = USERS[1];
+  public loggedUser?: User = USERS[0];
 
   public getUsers(): User[] {
     return this.users;

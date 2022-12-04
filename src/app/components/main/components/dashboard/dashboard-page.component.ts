@@ -16,6 +16,7 @@ import { User } from '../../../../models/user';
 })
 export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
+  @ViewChild('fab', {static: true}) public fab?: any;
   public trips: Trip[] = [];
   public tripName?: string;
   public startTime?: string = DateTime.now().toISO();
@@ -25,6 +26,8 @@ export class DashboardPage implements OnInit {
   public startAddress?: AddressFeature;
   public endAddress?: AddressFeature;
   public radius?: number = 2000;
+  public isModalOpened: boolean = false;
+  public tripForEdit?: Trip;
 
   constructor(
     private readonly mapboxService: MapboxService,
@@ -35,9 +38,7 @@ export class DashboardPage implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (this.userService.loggedUser) {
-      this.trips = this.tripService.getUserTrips(this.userService.loggedUser.id);
-    }
+    this.loadUserTrips();
   }
 
   public getMatchedTrips(tripId: number) {
@@ -48,26 +49,71 @@ export class DashboardPage implements OnInit {
     return this.userService.getUser(userId)!;
   }
 
+  public editTrip(trip: Trip): void {
+    this.tripForEdit = trip;
+    this.tripName = trip.name;
+    this.startAddress = trip.point.start;
+    this.endAddress = trip.point.end;
+    this.radius = trip.radius;
+    this.startTime = trip.timeWindow.start.toISO();
+    this.endTime = trip.timeWindow.end.toISO();
+    this.isModalOpened = true;
+  }
+
   public cancel() {
     this.modal?.dismiss(null, 'cancel');
   }
 
+  public openCreateModal(): void {
+    this.reset();
+    this.isModalOpened = true;
+  }
+
+  public reset(): void {
+    this.tripName = undefined;
+    this.startAddress = undefined;
+    this.endAddress = undefined;
+    this.radius = undefined;
+    this.startTime = DateTime.now().toISO();
+    this.endTime = DateTime.now().plus({'hour': 1}).toISO();
+  }
+
   public async confirm() {
     this.modal?.dismiss(null, 'cancel');
-    this.tripService.addTrip({
-      id: this.tripService.idCounter,
-      userId: this.userService.loggedUser!.id,
-      name: this.tripName!,
-      radius: this.radius!,
-      timeWindow: {
-        start: DateTime.fromISO(this.startTime!),
-        end: DateTime.fromISO(this.endTime!)
-      },
-      point: {
-        start: this.startAddress?.center!,
-        end: this.endAddress?.center!
-      }
-    });
+    if (this.tripForEdit) {
+      this.tripService.editTrip(this.tripForEdit.id, {
+        id: this.tripForEdit.id,
+        userId: this.userService.loggedUser!.id,
+        name: this.tripName!,
+        radius: this.radius!,
+        timeWindow: {
+          start: DateTime.fromISO(this.startTime!),
+          end: DateTime.fromISO(this.endTime!)
+        },
+        point: {
+          start: this.startAddress!,
+          end: this.endAddress!
+        }
+      });
+      this.tripForEdit = undefined;
+      this.loadUserTrips();
+    } else {
+      this.tripService.addTrip({
+        id: this.tripService.idCounter,
+        userId: this.userService.loggedUser!.id,
+        name: this.tripName!,
+        radius: this.radius!,
+        timeWindow: {
+          start: DateTime.fromISO(this.startTime!),
+          end: DateTime.fromISO(this.endTime!)
+        },
+        point: {
+          start: this.startAddress!,
+          end: this.endAddress!
+        }
+      });
+    }
+
 
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
   }
@@ -92,5 +138,11 @@ export class DashboardPage implements OnInit {
   public selectEndPoint(feature: AddressFeature) {
     this.endSuggestions = undefined;
     this.endAddress = feature;
+  }
+
+  private loadUserTrips(): void {
+    if (this.userService.loggedUser) {
+      this.trips = this.tripService.getUserTrips(this.userService.loggedUser.id);
+    }
   }
 }

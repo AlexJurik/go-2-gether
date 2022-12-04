@@ -9,7 +9,7 @@
   <ng-container *ngIf="trips.length; else noData">
     <ion-card *ngFor="let trip of trips">
       <ion-card-header>
-        <ion-card-title>{{trip.name}}</ion-card-title>
+        <ion-card-title (click)="editTrip(trip)">{{trip.name}}</ion-card-title>
         <ion-card-subtitle>{{trip.timeWindow.start.toFormat('y-LL-dd\' \'hh:mm')}}
           - {{trip.timeWindow.end.toFormat('y-LL-dd\' \'hh:mm')}}</ion-card-subtitle>
       </ion-card-header>
@@ -40,21 +40,23 @@
 </ion-content>
 
 <ion-fab class="ion-padding" slot="fixed" horizontal="end" vertical="bottom">
-  <ion-fab-button id="open-modal">
+  <ion-fab-button (click)="openCreateModal()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 
-<ion-modal trigger="open-modal">
+<ion-modal [isOpen]="isModalOpened" (willDismiss)="isModalOpened = false">
   <ng-template>
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-button (click)="cancel()">Cancel</ion-button>
         </ion-buttons>
-        <ion-title>Create your trip</ion-title>
+        <ion-title *ngIf="!tripForEdit">Create your trip</ion-title>
+        <ion-title *ngIf="tripForEdit">Edit your trip id {{tripForEdit.id}}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="confirm()" [strong]="true">Create</ion-button>
+          <ion-button (click)="confirm()"
+                      [strong]="true">{{ !!tripForEdit ? 'Edit' : 'Create'}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>

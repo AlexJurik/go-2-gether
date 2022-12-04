@@ -17,17 +17,17 @@ export class MatchingService {
     const matchedTrips: Trip[] = [];
     for (let trip of trips) {
       const polygonStart = await lastValueFrom(
-        this.mapBoxService.getIsochrone(trip.point.start, trip.radius)
+        this.mapBoxService.getIsochrone(trip.point.start.center, trip.radius)
       );
       let checkStartPoint = this.inside(
-        tripToMatch.point.start,
+        tripToMatch.point.start.center,
         polygonStart.features[0].geometry.coordinates[0]
       );
       const polygonEnd = await lastValueFrom(
-        this.mapBoxService.getIsochrone(trip.point.end, trip.radius)
+        this.mapBoxService.getIsochrone(trip.point.end.center, trip.radius)
       );
       let checkEndPoint = this.inside(
-        tripToMatch.point.end,
+        tripToMatch.point.end.center,
         polygonEnd.features[0].geometry.coordinates[0]
       );
       if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
@@ -49,22 +49,22 @@ export class MatchingService {
     for (let trip of trips) {
       const polygonStart = await lastValueFrom(
         this.mapBoxService.getIsochrone(
-          tripToMatch.point.start,
+          tripToMatch.point.start.center,
           tripToMatch.radius
         )
       );
       let checkStartPoint = this.inside(
-        trip.point.start,
+        trip.point.start.center,
         polygonStart.features[0].geometry.coordinates[0]
       );
       const polygonEnd = await lastValueFrom(
         this.mapBoxService.getIsochrone(
-          tripToMatch.point.end,
+          tripToMatch.point.end.center,
           tripToMatch.radius
         )
       );
       let checkEndPoint = this.inside(
-        trip.point.end,
+        trip.point.end.center,
         polygonEnd.features[0].geometry.coordinates[0]
       );
       if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
