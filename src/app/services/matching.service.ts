@@ -32,7 +32,11 @@ export class MatchingService {
       );
       if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
         matchedTrips.push(trip);
-        this.matchedTripsMap.get(trip.id)?.push(tripToMatch);
+        if (this.matchedTripsMap.has(trip.id)) {
+          this.matchedTripsMap.get(trip.id)!.push(tripToMatch);
+        } else {
+          this.matchedTripsMap.set(trip.id, [tripToMatch]);
+        }
       }
     }
 
@@ -69,11 +73,16 @@ export class MatchingService {
       );
       if (checkStartPoint && checkEndPoint && this.checkTimeWindows(trip.timeWindow, tripToMatch.timeWindow)) {
         matchedTrips.push(trip);
-        this.matchedTripsMap.get(trip.id)?.push(tripToMatch);
+        if (this.matchedTripsMap.has(trip.id)) {
+          this.matchedTripsMap.get(trip.id)!.push(tripToMatch);
+        } else {
+          this.matchedTripsMap.set(trip.id, [tripToMatch]);
+        }
       }
     }
 
     this.matchedTripsMap.set(tripToMatch.id, matchedTrips);
+    this.matchedTripsMap = new Map<number, Trip[]>(this.matchedTripsMap);
   }
 
   public inside([x, y]: [number, number], vs: number[][]) {

@@ -22,19 +22,17 @@
       </ion-card-header>
 
       <ion-card-content *ngIf="getMatchedTrips(trip.id) as trips; else noTrips">
-        <ng-container *ngIf="trips?.length">
-          <ng-container *ngFor="let trip of trips">
-            <ion-item>
-              <ion-icon name="flag-outline"></ion-icon>
-              <ion-label class="ion-padding-start">{{ trip.point.end.place_name }}</ion-label>
-              <ng-container *ngIf="getUser(trip.userId) as user">
-                <span class="ion-justify-content-end ion-padding-end">{{ user.name }}</span>
-                <a href="tel:{{user.phone}}">
-                  <ion-icon color="green" name="call" size="large"></ion-icon>
-                </a>
-              </ng-container>
-            </ion-item>
-          </ng-container>
+        <ng-container *ngFor="let trip of trips">
+          <ion-item>
+            <ion-icon name="flag-outline"></ion-icon>
+            <ion-label class="ion-padding-start">{{ trip.point.end.place_name }}</ion-label>
+            <ng-container *ngIf="getUser(trip.userId) as user">
+              <span class="ion-justify-content-end ion-padding-end">{{ user.name }}</span>
+              <a href="tel:{{user.phone}}">
+                <ion-icon color="green" name="call" size="large"></ion-icon>
+              </a>
+            </ng-container>
+          </ion-item>
         </ng-container>
       </ion-card-content>
 

@@ -23,7 +23,7 @@ export const TRIPS: Trip[] = [
     timeWindow: {start: DateTime.now().set({'hour': 8, 'minute': 0}), end: DateTime.now().set({'hour': 9, 'minute': 0})}
   },
   {
-    id: 1,
+    id: 2,
     userId: 1,
     name: 'Lunch',
     radius: 3000,
@@ -45,7 +45,7 @@ export const TRIPS: Trip[] = [
     }
   },
   {
-    id: 2,
+    id: 3,
     userId: 2,
     name: 'Coworking',
     radius: 1000,
