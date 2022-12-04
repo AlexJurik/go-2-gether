@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,18 +14,23 @@
       <ion-card-header>
         <ion-card-title (click)="editTrip(trip)">{{trip.name}}</ion-card-title>
         <ion-card-subtitle>{{trip.timeWindow.start.toFormat('y-LL-dd\' \'hh:mm')}}
-          - {{trip.timeWindow.end.toFormat('y-LL-dd\' \'hh:mm')}}</ion-card-subtitle>
+          - {{trip.timeWindow.end.toFormat('hh:mm')}}</ion-card-subtitle>
+        <ion-card-subtitle>{{trip.point.end.place_name}}</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content *ngIf="getMatchedTrips(trip.id) as trips; else noTrips">
-        <ng-container *ngFor="let trip of trips">
-          <ion-icon name="caret-forward-outline"></ion-icon>
-          {{ trip.name }}
-          <ng-container *ngIf="getUser(trip.userId) as user">
-            <span class="ion-justify-content-end">{{ user.name }}</span>
-            <a href="tel:{{user.phone}}">
-              <ion-icon class="call-icon" name="call"></ion-icon>
-            </a>
+        <ng-container *ngIf="trips?.length">
+          <ng-container *ngFor="let trip of trips">
+            <ion-item>
+              <ion-icon name="flag-outline"></ion-icon>
+              <ion-label class="ion-padding-start">{{ trip.point.end.place_name }}</ion-label>
+              <ng-container *ngIf="getUser(trip.userId) as user">
+                <span class="ion-justify-content-end ion-padding-end">{{ user.name }}</span>
+                <a href="tel:{{user.phone}}">
+                  <ion-icon color="green" name="call" size="large"></ion-icon>
+                </a>
+              </ng-container>
+            </ion-item>
           </ng-container>
         </ng-container>
       </ion-card-content>
@@ -34,30 +42,33 @@
       </ng-template>
     </ion-card>
   </ng-container>
+
+  <ng-template #noData>
+    <ion-label>You have not planned any trip yet.</ion-label>
+  </ng-template>
+
   <h1 class="ion-padding-bottom">Suggested trips</h1>
   <ng-container *ngIf="suggestedTrips?.length">
     <ion-card *ngFor="let suggestedTrip of suggestedTrips">
       <ion-card-header>
         <ion-card-title>{{suggestedTrip.name}}</ion-card-title>
         <ion-card-subtitle>{{suggestedTrip.timeWindow.start.toFormat('y-LL-dd\' \'hh:mm')}}
-          - {{suggestedTrip.timeWindow.end.toFormat('y-LL-dd\' \'hh:mm')}}</ion-card-subtitle>
+          - {{suggestedTrip.timeWindow.end.toFormat('hh:mm')}}</ion-card-subtitle>
+        <ion-card-subtitle>{{suggestedTrip.point.end.place_name}}</ion-card-subtitle>
       </ion-card-header>
-      <ng-container *ngIf="getUser(suggestedTrip.userId) as user">
-        <span class="ion-justify-content-end ion-padding-start">This is {{ user.name }}'s trip</span>
-        <a href="tel:{{user.phone}}">
-          <ion-icon class="call-icon" name="call"></ion-icon>
-        </a>
-      </ng-container>
-      <ng-template #noTrips>
-        <ion-card-content>
-          There is no matched trip at the moment.
-        </ion-card-content>
-      </ng-template>
+      <ion-card-content>
+        <ng-container *ngIf="getUser(suggestedTrip.userId) as user">
+          <ion-item>
+            <ion-icon name="bulb-outline"></ion-icon>
+            <ion-label class="ion-padding-start">This is {{ user.name }}'s trip</ion-label>
+            <a href="tel:{{user.phone}}">
+              <ion-icon color="green" name="call" size="large"></ion-icon>
+            </a>
+          </ion-item>
+        </ng-container>
+      </ion-card-content>
     </ion-card>
   </ng-container>
-  <ng-template #noData>
-    <ion-label>You have not planned any trip yet.</ion-label>
-  </ng-template>
 </ion-content>
 
 <ion-fab class="ion-padding" slot="fixed" horizontal="end" vertical="bottom">
@@ -74,7 +85,7 @@
           <ion-button (click)="cancel()">Cancel</ion-button>
         </ion-buttons>
         <ion-title *ngIf="!tripForEdit">Create your trip</ion-title>
-        <ion-title *ngIf="tripForEdit">Edit your trip id {{tripForEdit.id}}</ion-title>
+        <ion-title *ngIf="tripForEdit">Edit your {{tripForEdit.name }} trip</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="confirm()"
                       [strong]="true">{{ !!tripForEdit ? 'Edit' : 'Create'}}</ion-button>
@@ -88,7 +99,7 @@
           <ion-input type="text" placeholder="Trip name" [(ngModel)]="tripName"></ion-input>
         </ion-item>
         <ng-container *ngIf="!startAddress; else start">
-          <ion-searchbar placeholder="Find start address" [debounce]="1000"
+          <ion-searchbar placeholder="Find start address" [debounce]="500"
                          (ionChange)="searchAddress($event, 'start')"></ion-searchbar>
 
           <ion-list *ngIf="startSuggestions">
@@ -106,7 +117,7 @@
         </ng-template>
 
         <ng-container *ngIf="!endAddress; else end">
-          <ion-searchbar placeholder="Find destination" [debounce]="1000"
+          <ion-searchbar placeholder="Find destination" [debounce]="500"
                          (ionChange)="searchAddress($event, 'end')"></ion-searchbar>
 
           <ion-list *ngIf="endSuggestions">
