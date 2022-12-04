@@ -18,6 +18,9 @@ export class MainPage implements OnInit {
   }
 
   public appPages = [
-    {title: 'Dashboard', url: '/app/dashboard', icon: 'apps'}
+    {title: 'Dashboard', url: '/app/dashboard', icon: 'apps'},
+    {title: 'Analytics', url: '/app/analytics', icon: 'analytics'},
+    {title: 'Bonuses', url: '/app/bonuses', icon: 'ribbon'},
+    {title: 'Settings', url: '/app/settings', icon: 'settings'}
   ];
 }

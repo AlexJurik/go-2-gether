@@ -13,6 +13,17 @@ const routes: Routes = [
       }, {
         path: 'dashboard',
         loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardPageModule)
+      },
+      {
+        path: 'analytics',
+        loadChildren: () => import('./components/analytics/analytics.module').then(m => m.AnalyticsPageModule)
+      }, {
+        path: 'bonuses',
+        loadChildren: () => import('./components/bonuses/bonuses.module').then(m => m.BonusesPageModule)
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import('./components/settings/settings.module').then(m => m.SettingsPageModule)
       }]
   }
 ];
