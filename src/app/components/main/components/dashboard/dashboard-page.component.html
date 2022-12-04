@@ -20,6 +20,9 @@
           {{ trip.name }}
           <ng-container *ngIf="getUser(trip.userId) as user">
             <span class="ion-justify-content-end">{{ user.name }}</span>
+            <a href="tel:{{user.phone}}">
+              <ion-icon class="call-icon" name="call"></ion-icon>
+            </a>
           </ng-container>
         </ng-container>
       </ion-card-content>

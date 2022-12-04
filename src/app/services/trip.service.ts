@@ -38,7 +38,6 @@ export class TripService {
       const tripsByUserType = this.getTripsByUserType('passenger');
       this.matchingService.findMatchedTripsDriver(trip, tripsByUserType);
     }
-    console.log(this.matchingService.matchedTripsMap);
     this.trips.push(trip);
     this.idCounter++;
   }
