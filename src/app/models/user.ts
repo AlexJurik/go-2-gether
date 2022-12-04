@@ -5,5 +5,6 @@ export interface User {
   phone: string;
   password: string;
   type: 'driver' | 'passenger';
+  favorite?: number[]
 }
 

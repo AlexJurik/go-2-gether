@@ -3,6 +3,7 @@ import { Trip } from '../models/trip';
 import { TRIPS } from '../mocks/mock-trips';
 import { MatchingService } from './matching.service';
 import { UserService } from './user.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class TripService {
     );
   }
 
+
   public addTrip(trip: Trip): void {
     this.checkMatchings(trip);
     this.trips.push(trip);
@@ -50,5 +52,10 @@ export class TripService {
       const tripsByUserType = this.getTripsByUserType('passenger');
       this.matchingService.findMatchedTripsDriver(trip, tripsByUserType);
     }
+  }
+
+  public findFavoriteTrips(user: User, trips: Trip[]): Trip[] | undefined{
+    return [...trips.filter((trip)=> user.favorite![0] === trip.point.end.center[0] && user.favorite![1] === trip.point.end.center[1])];
+    
   }
 }

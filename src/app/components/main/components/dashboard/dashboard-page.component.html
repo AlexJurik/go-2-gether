@@ -34,6 +34,27 @@
       </ng-template>
     </ion-card>
   </ng-container>
+  <h1 class="ion-padding-bottom">Suggested trips</h1>
+  <ng-container *ngIf="suggestedTrips?.length">
+    <ion-card *ngFor="let suggestedTrip of suggestedTrips">
+      <ion-card-header>
+        <ion-card-title>{{suggestedTrip.name}}</ion-card-title>
+        <ion-card-subtitle>{{suggestedTrip.timeWindow.start.toFormat('y-LL-dd\' \'hh:mm')}}
+          - {{suggestedTrip.timeWindow.end.toFormat('y-LL-dd\' \'hh:mm')}}</ion-card-subtitle>
+      </ion-card-header>
+      <ng-container *ngIf="getUser(suggestedTrip.userId) as user">
+        <span class="ion-justify-content-end ion-padding-start">This is {{ user.name }}'s trip</span>
+        <a href="tel:{{user.phone}}">
+          <ion-icon class="call-icon" name="call"></ion-icon>
+        </a>
+      </ng-container>
+      <ng-template #noTrips>
+        <ion-card-content>
+          There is no matched trip at the moment.
+        </ion-card-content>
+      </ng-template>
+    </ion-card>
+  </ng-container>
   <ng-template #noData>
     <ion-label>You have not planned any trip yet.</ion-label>
   </ng-template>

@@ -3,7 +3,10 @@ import { TripService } from '../../../../services/trip.service';
 import { Trip } from '../../../../models/trip';
 import { UserService } from '../../../../services/user.service';
 import { IonModal } from '@ionic/angular';
-import { AddressFeature, MapboxService } from '../../../../services/mapbox.service';
+import {
+  AddressFeature,
+  MapboxService,
+} from '../../../../services/mapbox.service';
 import { lastValueFrom } from 'rxjs';
 import { MatchingService } from '../../../../services/matching.service';
 import { DateTime } from 'luxon';
@@ -12,15 +15,15 @@ import { User } from '../../../../models/user';
 @Component({
   selector: 'app-main',
   templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.scss']
+  styleUrls: ['./dashboard-page.component.scss'],
 })
 export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
-  @ViewChild('fab', {static: true}) public fab?: any;
+  @ViewChild('fab', { static: true }) public fab?: any;
   public trips: Trip[] = [];
   public tripName?: string;
   public startTime?: string = DateTime.now().toISO();
-  public endTime?: string = DateTime.now().plus({'hour': 1}).toISO();
+  public endTime?: string = DateTime.now().plus({ hour: 1 }).toISO();
   public startSuggestions?: AddressFeature[];
   public endSuggestions?: AddressFeature[];
   public startAddress?: AddressFeature;
@@ -28,14 +31,14 @@ export class DashboardPage implements OnInit {
   public radius?: number = 2000;
   public isModalOpened: boolean = false;
   public tripForEdit?: Trip;
+  public suggestedTrips?: Trip[] = [];
 
   constructor(
     private readonly mapboxService: MapboxService,
     private readonly tripService: TripService,
     private readonly userService: UserService,
     private readonly matchingService: MatchingService
-  ) {
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.loadUserTrips();
@@ -75,7 +78,7 @@ export class DashboardPage implements OnInit {
     this.endAddress = undefined;
     this.radius = undefined;
     this.startTime = DateTime.now().toISO();
-    this.endTime = DateTime.now().plus({'hour': 1}).toISO();
+    this.endTime = DateTime.now().plus({ hour: 1 }).toISO();
   }
 
   public async confirm() {
@@ -88,12 +91,12 @@ export class DashboardPage implements OnInit {
         radius: this.radius!,
         timeWindow: {
           start: DateTime.fromISO(this.startTime!),
-          end: DateTime.fromISO(this.endTime!)
+          end: DateTime.fromISO(this.endTime!),
         },
         point: {
           start: this.startAddress!,
-          end: this.endAddress!
-        }
+          end: this.endAddress!,
+        },
       });
       this.tripForEdit = undefined;
       this.loadUserTrips();
@@ -105,15 +108,14 @@ export class DashboardPage implements OnInit {
         radius: this.radius!,
         timeWindow: {
           start: DateTime.fromISO(this.startTime!),
-          end: DateTime.fromISO(this.endTime!)
+          end: DateTime.fromISO(this.endTime!),
         },
         point: {
           start: this.startAddress!,
-          end: this.endAddress!
-        }
+          end: this.endAddress!,
+        },
       });
     }
-
 
     this.trips = this.tripService.getUserTrips(this.userService.loggedUser!.id);
   }
@@ -142,7 +144,22 @@ export class DashboardPage implements OnInit {
 
   private loadUserTrips(): void {
     if (this.userService.loggedUser) {
-      this.trips = this.tripService.getUserTrips(this.userService.loggedUser.id);
+      this.trips = this.tripService.getUserTrips(
+        this.userService.loggedUser.id
+      );
     }
+    if(this.userService.loggedUser?.favorite){
+      this.checkForSuggestions();
+    }
+  }
+
+  public checkForSuggestions() {
+    const userType =
+      this.userService.loggedUser?.type == 'driver' ? 'passenger' : 'driver';
+    const trips = this.tripService.getTripsByUserType(userType);
+    this.suggestedTrips = this.tripService.findFavoriteTrips(
+      this.userService.loggedUser!,
+      trips
+    );
   }
 }
