@@ -16,9 +16,9 @@ import { DateTime } from 'luxon';
 export class DashboardPage implements OnInit {
   @ViewChild(IonModal) public modal?: IonModal;
   public trips: Trip[] = [];
-  public tripName?: string;
-  public startTime?: string = DateTime.now().toISO();
-  public endTime?: string = DateTime.now().plus({hour: 1}).toISO();
+  public tripName?: string = 'Lunch';
+  public startTime: string = DateTime.now().set({'hour': 12, 'minute': 0}).toISO();
+  public endTime: string = DateTime.now().set({'hour': 12, 'minute': 20}).toISO();
   public startSuggestions?: AddressFeature[];
   public endSuggestions?: AddressFeature[];
   public startAddress?: AddressFeature;
@@ -64,17 +64,17 @@ export class DashboardPage implements OnInit {
   }
 
   public openCreateModal(): void {
-    this.reset();
     this.isModalOpened = true;
   }
 
   public reset(): void {
-    this.tripName = undefined;
+    this.tripName = 'Lunch';
     this.startAddress = undefined;
     this.endAddress = undefined;
-    this.radius = undefined;
-    this.startTime = DateTime.now().toISO();
-    this.endTime = DateTime.now().plus({hour: 1}).toISO();
+    this.radius = 2000;
+    this.startTime = DateTime.now().set({'hour': 12, 'minute': 0}).toISO();
+    this.endTime = DateTime.now().set({'hour': 12, 'minute': 20}).toISO();
+    this.tripForEdit = undefined;
   }
 
   public async confirm() {
